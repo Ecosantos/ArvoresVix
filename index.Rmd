@@ -54,7 +54,7 @@ addMarkers(lng = ~x, lat = ~y,
   
 
 map <- addControlGPS(map, options = gpsOptions(position = "topleft", activate = TRUE, 
-                                               autoCenter = TRUE, maxZoom = 10, 
+                                               autoCenter = TRUE, maxZoom = 20, 
                                                setView = TRUE))
 activateGPS(map)
 
