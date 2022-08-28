@@ -1,0 +1,61 @@
+---
+title: "Árvores de Vitória - BETA"
+author: "Um aplicativo desenvolvido por Gabriel Santos"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: html_document
+self_contained: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Árvores de Vitória
+
+Seja bem vindo ao aplicativo Árvores de Vitória! Qualquer dúvida favor entrar em contato com o desenvolvedor por [email](mailto:ssantos.gabriel@gmail.com). Caso queira saber sobre mais sobre outros projetos do mesmo desenvolvedor visite a página pessoal [Gabriel Santos](https://ecosantos.netlify.app/)
+
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(leaflet)
+library(leaflet.extras)
+library(rgdal)
+```
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+Arvores<-rgdal::readOGR(
+	dsn = getwd(), 
+			layer = "arvores")
+```
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+#Convert SIRGAS para WGS
+Arvores<-spTransform(Arvores,CRS("+proj=longlat"))
+```
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+centroids<-rgeos::gCentroid(Arvores,byid=TRUE)
+
+Arvores<-cbind(Arvores@data,centroids)
+```
+
+```{r echo=FALSE}
+map<-leaflet(Arvores)%>%
+   addMiniMap()%>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+addMarkers(lng = ~x, lat = ~y,
+                        popup = ~paste0(
+	"<br/><strong>ID:</strong>:",OBJECTID,
+	"<br/><strong>Nome popular:</strong>",nomePopula,
+	"<br/><strong>Nome científico:</strong>",nomeCienti,
+	"<br/><strong>Localidade:</strong>",logradouro),
+  clusterOptions = markerClusterOptions())
+  
+  
+
+map <- addControlGPS(map, options = gpsOptions(position = "topleft", activate = TRUE, 
+                                               autoCenter = TRUE, maxZoom = 10, 
+                                               setView = TRUE))
+activateGPS(map)
+
+```

@@ -1,0 +1,58 @@
+---
+title: "App - Aug 28 2022"
+author: "Gabriel Santos"
+date: '2022-08-28'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(leaflet)
+library(leaflet.extras)
+library(rgdal)
+```
+
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+Arvores<-rgdal::readOGR(
+	dsn = getwd(), 
+			layer = "arvores")
+```
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+#Convert SIRGAS para WGS
+Arvores<-spTransform(Arvores,CRS("+proj=longlat"))
+```
+
+
+```{r  include=FALSE, message=FALSE, warning=FALSE}
+centroids<-rgeos::gCentroid(Arvores,byid=TRUE)
+
+Arvores<-cbind(Arvores@data,centroids)
+```
+
+
+
+```{r echo=FALSE}
+map<-leaflet(Arvores)%>%
+   addMiniMap()%>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+addMarkers(lng = ~x, lat = ~y,
+  clusterOptions = markerClusterOptions())
+  
+
+map <- addControlGPS(map, options = gpsOptions(position = "topleft", activate = TRUE, 
+                                               autoCenter = TRUE, maxZoom = 10, 
+                                               setView = TRUE))
+
+map
+
+activateGPS(map)
+
+```
