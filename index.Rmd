@@ -20,6 +20,8 @@ library(tidyverse)
 library(leaflet)
 library(leaflet.extras)
 library(rgdal)
+library(sf)
+library(leafgl)
 ```
 
 ```{r  include=FALSE, message=FALSE, warning=FALSE}
@@ -39,7 +41,8 @@ centroids<-rgeos::gCentroid(Arvores,byid=TRUE)
 Arvores<-cbind(Arvores@data,centroids)
 ```
 
-```{r echo=FALSE}
+```{r eval=FALSE, include=FALSE}
+#O código não funciona muito bem, usar framework do pacote leafgl
 map<-leaflet(Arvores)%>%
    addMiniMap()%>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
@@ -59,3 +62,33 @@ map <- addControlGPS(map, options = gpsOptions(position = "topleft", activate = 
 activateGPS(map)
 
 ```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#O pacote leafgl tem uma performance melhor porém não permite popup com multiplas linhas. 
+#Não consegui fazer gambiarra pra isso
+
+
+Arvores<-Arvores%>%st_as_sf(.,coords = c("x", "y"))
+
+Arvores$popup<-paste0(Arvores$nomePopula,";",Arvores$nomeCienti)
+
+
+
+map<-leaflet(Arvores)%>%
+   addMiniMap()%>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+addGlPoints(data=Arvores,lng = ~x, lat = ~y,popup="popup",fillColor ="blueviolet",fillOpacity = 1)
+
+
+map <- addControlGPS(map, options = gpsOptions(position = "topleft", activate = TRUE, 
+                                               autoCenter = TRUE, maxZoom = 25, 
+                                               setView = FALSE))
+activateGPS(map)
+
+```
+
+
+
+
