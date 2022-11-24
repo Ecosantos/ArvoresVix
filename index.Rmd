@@ -17,6 +17,7 @@ library(leaflet.extras)
 library(rgdal)
 library(sf)
 library(leafgl)
+library(shiny)
 ```
 
 ```{r  include=FALSE, message=FALSE, warning=FALSE}
@@ -30,14 +31,13 @@ Arvores<-rgdal::readOGR(
 Arvores<-spTransform(Arvores,CRS("+proj=longlat"))
 ```
 
-
 ```{r  include=FALSE, message=FALSE, warning=FALSE}
 centroids<-rgeos::gCentroid(Arvores,byid=TRUE)
 
 Arvores<-cbind(Arvores@data,centroids)
 ```
 
-# Árvores de Vitória 
+# Árvores de Vitória
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #O pacote leafgl tem uma performance melhor porém não permite popup com multiplas linhas. 
@@ -66,8 +66,10 @@ map
 
 ```
 
-
 # Sobre
 
 Seja bem vindo ao aplicativo Árvores de Vitória! Qualquer dúvida favor entrar em contato com o desenvolvedor por [email](mailto:ssantos.gabriel@gmail.com). Caso queira saber sobre mais sobre outros projetos do mesmo desenvolvedor visite a página pessoal [Gabriel Santos](https://ecosantos.netlify.app/)
 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+includeHTML("Sobre_distill.html")
+```
