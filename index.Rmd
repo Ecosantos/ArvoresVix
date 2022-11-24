@@ -68,8 +68,23 @@ map
 
 # Sobre
 
-Seja bem vindo ao aplicativo Árvores de Vitória! Qualquer dúvida favor entrar em contato com o desenvolvedor por [email](mailto:ssantos.gabriel@gmail.com). Caso queira saber sobre mais sobre outros projetos do mesmo desenvolvedor visite a página pessoal [Gabriel Santos](https://ecosantos.netlify.app/)
+<h1>Sobre</h1>
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-includeHTML("Sobre_distill.html")
-```
+São mais de 30 mil árvores mapeadas no município de Vitória representando mais de cem espécies diferentes entre nativas e exóticas que acabam passando icógnitas entre os passantes. A ideia central do aplicativo Árvores de Vitória é promover uma experiência divertida descobrindo as diferentes formas e diversidade durante as caminhadas pela cidade. O app ***Árvores de Vitória*** é uma iniciativa independente e amadora do pesquisador Gabriel Santos.
+
+<h1>COMO CONTRIBUIR</h1>
+
+Para contribuir com o aplicativo você pode enviar sua sugestão por [email](mailto:ssantos.gabriel@gmail.com).
+
+<h1>LICENÇA</h1>
+
+Publicado sob a licença Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional.
+
+Confira as regras de reprodução e modificação: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt)
+
+<h1>AUTOR</h1>
+
+|                                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |     |
+|:-----------------:|------------------------------------|-------------------|
+| ![](Gabriel.jpeg){width="159"} | **Gabriel S. Santos** atualmente é pesquisador vinculado ao Instituto Nacional da Mata Atlântica. Tem interesse em diversas linhas de pesquisa que envolvam o uso de estatística, teoria e o envolvimento da comunidade local, entre elas análise de viabilidade populacional da vida selvagem, evolução da história de vida dos organismos, proposta de manejo de espécies exóticas e ameaçadas e ciência cidadã. Você pode acompanhar mais sobre os projetos desenvolvidos através do [site](https://ecosantos.netlify.app/), [Lattes](http://lattes.cnpq.br/1714610835853424), ou mande um [email](mailto:ssantos.gabriel@gmail.com) |     |
+
