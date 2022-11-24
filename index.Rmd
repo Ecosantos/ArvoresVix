@@ -1,19 +1,14 @@
 ---
-title: "Árvores de Vitória - BETA"
-author: "Um aplicativo desenvolvido por Gabriel Santos"
-date: "`r format(Sys.time(), '%Y-%m-%d')`"
-output: html_document
+title: "Árvores de Vitória - Beta"
+author: ""
+date: ""
+output: flexdashboard::flex_dashboard
 self_contained: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-# Árvores de Vitória
-
-Seja bem vindo ao aplicativo Árvores de Vitória! Qualquer dúvida favor entrar em contato com o desenvolvedor por [email](mailto:ssantos.gabriel@gmail.com). Caso queira saber sobre mais sobre outros projetos do mesmo desenvolvedor visite a página pessoal [Gabriel Santos](https://ecosantos.netlify.app/)
-
 
 ```{r  include=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -35,13 +30,14 @@ Arvores<-rgdal::readOGR(
 Arvores<-spTransform(Arvores,CRS("+proj=longlat"))
 ```
 
+
 ```{r  include=FALSE, message=FALSE, warning=FALSE}
 centroids<-rgeos::gCentroid(Arvores,byid=TRUE)
 
 Arvores<-cbind(Arvores@data,centroids)
 ```
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE, include=FALSE} 
 #O código não funciona muito bem, usar framework do pacote leafgl
 map<-leaflet(Arvores)%>%
    addMiniMap()%>%
@@ -64,6 +60,10 @@ activateGPS(map)
 ```
 
 
+# Árvores de Vitória
+
+
+### {.mobile}
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #O pacote leafgl tem uma performance melhor porém não permite popup com multiplas linhas. 
@@ -76,14 +76,15 @@ Arvores$popup<-paste0(Arvores$nomePopula,";",Arvores$nomeCienti)
 
 
 
-map<-leaflet(Arvores)%>%
+map<-leaflet(Arvores,width="100%")%>%
    addMiniMap()%>%
-  addTiles() %>%  # Add default OpenStreetMap map tiles
+    addProviderTiles(providers$CartoDB.Positron,options = tileOptions(maxZoom = 50))%>%
+    addTiles(options = tileOptions(maxZoom = 50)) %>%  # Add default OpenStreetMap map tiles
 addGlPoints(data=Arvores,lng = ~x, lat = ~y,popup="popup",fillColor ="blueviolet",fillOpacity = 1)
 
 
 map <- addControlGPS(map, options = gpsOptions(position = "topleft", activate = TRUE, 
-                                               autoCenter = TRUE, maxZoom = 25, 
+                                               autoCenter = TRUE, 
                                                setView = FALSE))
 activateGPS(map)
 
@@ -91,4 +92,33 @@ activateGPS(map)
 
 
 
+### {.no-mobile}
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#O pacote leafgl tem uma performance melhor porém não permite popup com multiplas linhas. 
+#Não consegui fazer gambiarra pra isso
+
+
+Arvores<-Arvores%>%st_as_sf(.,coords = c("x", "y"))
+
+Arvores$popup<-paste0(Arvores$nomePopula,";",Arvores$nomeCienti)
+
+
+map<-leaflet(Arvores,width="100%")%>%
+   addMiniMap()%>%
+    addProviderTiles(providers$CartoDB.Positron,options = tileOptions(maxZoom = 50))%>%
+    addTiles(options = tileOptions(maxZoom = 50)) %>%  # Add default OpenStreetMap map tiles
+addGlPoints(data=Arvores,lng = ~x, lat = ~y,popup="popup",fillColor ="blueviolet",fillOpacity = 1)
+
+
+map <- addControlGPS(map, options = gpsOptions(position = "topleft", activate = TRUE, 
+                                               autoCenter = TRUE, 
+                                               setView = FALSE))
+activateGPS(map)
+
+```
+
+# Sobre
+
+Seja bem vindo ao aplicativo Árvores de Vitória! Qualquer dúvida favor entrar em contato com o desenvolvedor por [email](mailto:ssantos.gabriel@gmail.com). Caso queira saber sobre mais sobre outros projetos do mesmo desenvolvedor visite a página pessoal [Gabriel Santos](https://ecosantos.netlify.app/)
 
